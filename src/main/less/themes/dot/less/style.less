@@ -1,0 +1,95 @@
+@import "default.less";
+@import "legacy.less";
+
+body {
+	background: #333 url(../image/back01.gif);
+}
+
+header {
+	background: #333;
+	border-top: 3px solid #555;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	padding-top: 10px;
+	margin-top: 15px;
+	.nav {
+		li {
+			& > a {
+				background: @brand-primary;
+				color: @body-bg;
+				padding: 8px 15px;
+			}
+			& > a:hover {
+                background: @brand-primary;
+                color: @body-bg;
+                border-color: @brand-primary;
+            }
+		}
+		li.active {
+			a, a:hover, a:focus {
+				background-color: #eee;
+			}
+		}
+		border-bottom: none;
+		padding: 0 15px 0 15px;
+	}
+	.top-navbar {
+		margin-bottom: 20px;
+	}
+}
+
+.nav > li > a {
+	color: @text-color;
+}
+
+footer {
+	padding: 20px 0 20px 0;
+	text-align: center;
+	color: @body-bg;
+}
+
+main {
+	background: @body-bg;
+	-moz-border-radius-bottomleft: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	padding: 10px 25px 25px 25px;
+}
+
+.navbar-brand {
+	color: @body-bg;
+	font-size: @font-size-base;
+}
+
+.secondary-nav {
+	margin-top: 1px;
+	height: 40px;
+	background: #eee;
+	padding: 0 15px 0 15px;
+}
+
+.lang {
+	cursor: pointer;
+    font-size: @font-size-small;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+.lang.active, .lang.active:hover {
+    color: @gray-light;
+    border-bottom: none;
+}
+.lang-wrapper:not(:last-of-type):after {
+    content: '/';
+    font: normal 300 13px/1.2 "Helvetica Neue", sans-serif;
+    padding: 0 4px 0 4px;
+    color: @gray-light;
+}
+
+input {
+	border: 1px solid #aaa;
+	padding: 4px;
+	background: darken(@body-bg, 3%);
+}

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html lang="en" class="ie ie9"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html dir="ltr" lang="{{currentLocale}}"> <!--<![endif]-->
+  <head>
+
+	<!-- Basic Page Needs -->
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Language" content="{{currentLocale.language}}" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="Description" content="FenixEdu™ is an open-source academic information platform." />
+	<meta name="Keywords" content="FenixEdu, open-source, academic, information, platform, academic administration, higher education, e-learning" />
+	<meta name="Language" content="{{currentLocale}}" />
+	<meta name="Robots" content="all" />
+	<meta name="Author" content="FenixEdu" />
+	<meta name="Email" content="hello@fenixedu.org" />
+	<meta name="Copyright" content="Técnico Lisboa — Instituto Superior Técnico" />
+	<meta name="Distribution" content="Global" />
+	<meta name="Rating" content="General" />
+
+	<!-- OpenGraph Specific Metas -->
+	<meta property="og:title" content="FenixEdu™" />
+	<meta property="og:type" content="application" />
+	<meta property="og:image" content="/img/logo_og.png" />
+	<meta property="og:url" content="http://www.fenixedu.org" />
+	<meta property="og:site_name" content="FenixEdu" />
+	<meta property="og:description" content="FenixEdu™ is an open-source academic information platform." />
+	<meta property="fb:profile_id" content="379238245509413" />
+
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <title>{% block title %}{{ functionality.title.content }} · {{ selectedTopLevel.title.content }}{% endblock %}</title>
+
+    <link href="{{contextPath}}/themes/dot/css/style.css" rel="stylesheet">
+	{% block headerStyles %}{% endblock %}
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+	<script src="{{contextPath}}/bennu-portal/js/jquery.min.js"></script>
+	<script src="{{contextPath}}/themes/dot/js/bootstrap.min.js"></script>
+	<script> setLang = function(l) {$.post('{{contextPath}}/api/bennu-core/profile/locale/' + l.replace('_', '-')).always(function() { location.reload(); });}</script>
+
+	<link rel="shortcut icon" type="image/x-icon" href="{{contextPath}}/api/bennu-portal/configuration/favicon">
+  </head>
+
+  <body>
+	  {% block body %}
+	  <div class="container">
+	  	{% block topbar %}
+		<header class="row" role="banner">
+			<div class="top-navbar">
+				<img class="app-logo" width="58px" heigth="49px" src="{{contextPath}}/api/bennu-portal/configuration/logo" alt="{{config.applicationTitle.content}}">
+				<div class="navbar-brand">
+					<h4 class="media-heading">{{config.applicationTitle.content}} <span class="small" id="subtitle">{{config.applicationSubTitle.content}}</span></h4>
+				</div>
+				  <div class="collapse navbar-collapse">
+				 	<span class="pull-right text-right navbar-brand">
+					  	{% if loggedUser is null %}
+							<a href="{{contextPath}}/login">{{ i18n('resources.DotThemeResources', 'label.login') }}</a>
+					 	{% else %}
+							{{ i18n('resources.DotThemeResources', 'label.username') }}: {{loggedUser.username}}
+							<a href="{{contextPath}}/logout">{{ i18n('resources.DotThemeResources', 'label.logout') }}</a>
+							<br />
+
+							{% for locale in locales %}
+								<span class="lang-wrapper">
+									<a class="lang {% if locale == currentLocale %}active{% endif %}" title="{{locale.displayName}}" onclick="setLang('{{locale}}')">{{locale.language}}</a>
+								</span>
+							{% endfor %}
+						{% endif %}
+					</span>
+				</div>
+			</div>
+			<nav>
+				<ul class="nav nav-tabs">
+					{% lazyFor item in topLevelMenu %}
+					<li class="menu {% if item == selectedTopLevel %}active{% endif %}">
+						<a href="{{contextPath}}/{{item.path}}" alt="{{item.description.content}}">{{item.title.content}}</a>
+					</li>
+					{% endLazyFor %}
+				</ul>
+			</nav>
+		</header>
+		{% endblock %}
+
+		<nav class="row secondary-nav">
+			<ul class="nav nav-pills">
+				{% lazyFor child in selectedTopLevel.userMenuStream %}
+				<li class="submenu">
+					<a href="{{contextPath}}{{child.fullPath}}" alt="{{ child.description.content }}">
+						{% if child is in(pathFromRoot) %}
+							<strong>{{ child.title.content }}</strong>
+						{% else %}
+							<span>{{ child.title.content }}</span>
+						{% endif %}
+					</a>
+				</li>
+				{% endLazyFor %}
+			</ul>
+		</nav>
+
+		<div class="row">
+			<main id="content" class="clearfix">
+				<div>
+					{{body}}
+				</div>
+			</main>
+		</div>
+
+		{% block footer %}
+		<footer class="col-lg-12 footer">
+			{{config.applicationCopyright.content}}
+		</footer>
+		{% endblock %}
+		</div>
+
+		{% endblock %}
+	</body>
+</html>
