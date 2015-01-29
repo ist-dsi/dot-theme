@@ -206,6 +206,10 @@ font-weight: normal;
        Tooltip
 ---------------------------------------*/
 
+.tooltip {
+opacity: 100;
+}
+
 div.tooltip {
 display: inline;
 position: relative
@@ -416,8 +420,25 @@ div.portlet-content table.quicksearch th, div.portlet-content table.quicksearch 
 padding: 0 4px !important;
 }
 div.portlet-content table.quicksearch {
-margin: 1em 0;
+/*margin: 1em 0;*/
+width: 100%;
 }
+table.quicksearch label.col-sm-2 {
+width: 30%;
+white-space: nowrap;
+}
+table.quicksearch div.col-sm-10 {
+width: 65%;
+}
+div.yearSearch label.col-sm-2 {
+width: 25%;
+white-space: nowrap;
+}
+div.yearSearch div.col-sm-10 {
+width: 10%;
+} 
+
+
 
 div.portlet-header .ui-icon {
 float: right;     
