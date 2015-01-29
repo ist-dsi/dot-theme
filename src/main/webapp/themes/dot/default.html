@@ -64,7 +64,7 @@
 					  	{% if loggedUser is null %}
 							<a href="{{contextPath}}/login">{{ i18n('resources.DotThemeResources', 'label.login') }}</a>
 					 	{% else %}
-							{{ i18n('resources.DotThemeResources', 'label.username') }}: {{loggedUser.username}}
+							{{ i18n('resources.DotThemeResources', 'label.username') }}: {{loggedUser.shortPresentationName}}
 							<a href="{{contextPath}}/logout">{{ i18n('resources.DotThemeResources', 'label.logout') }}</a>
 							<br />
 
