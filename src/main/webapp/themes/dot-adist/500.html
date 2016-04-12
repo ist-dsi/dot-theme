@@ -2,8 +2,8 @@
 	<head>
 		<title>{{i18n('resources.BennuPortalResources', 'label.error.occurred')}} · {{config.applicationTitle.content}}</title>
 		<meta charset="utf-8">
-		<script src="{{contextPath}}/bennu-portal/js/angular.min.js"></script>
-	    <link href="{{contextPath}}/themes/dot/css/style.css" rel="stylesheet">
+		<script src="{{asset('/bennu-portal/js/angular.min.js')}}"></script>
+	    <link href="{{asset('/themes/dot/css/style.css')}}" rel="stylesheet">
 	</head>
 	<body ng-controller="ErrorCtrl">
 		<div class="container">

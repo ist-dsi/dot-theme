@@ -33,7 +33,7 @@
 
     <title>{% block title %}{{ functionality.title.content }} · {{ selectedTopLevel.title.content }}{% endblock %}</title>
 
-    <link href="{{contextPath}}/themes/dot/css/style.css" rel="stylesheet">
+    <link href="{{asset('/themes/dot/css/style.css')}}" rel="stylesheet">
 	{% block headerStyles %}{% endblock %}
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -42,8 +42,8 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-	<script src="{{contextPath}}/bennu-portal/js/jquery.min.js"></script>
-	<script src="{{contextPath}}/themes/dot/js/bootstrap.min.js"></script>
+	<script src="{{asset('/bennu-portal/js/jquery.min.js')}}"></script>
+	<script src="{{asset('/themes/dot/js/bootstrap.min.js')}}"></script>
 	<script> setLang = function(l) {$.post('{{contextPath}}/api/bennu-core/profile/locale/' + l.replace('_', '-')).always(function() { location.reload(); });}</script>
 
 	<link rel="shortcut icon" type="image/x-icon" href="{{contextPath}}/api/bennu-portal/configuration/favicon">
