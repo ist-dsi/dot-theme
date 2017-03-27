@@ -129,6 +129,9 @@ Locale       | {{locale}}
 					$scope.success = true;
 				});
 			}
-		}]);
+		}]).config(['$httpProvider',function($httpProvider) {
+            $httpProvider.defaults.headers.common = $httpProvider.defaults.headers.common || {};
+            $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+        }]);
 	</script>
 </html>
