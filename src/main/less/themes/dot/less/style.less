@@ -93,3 +93,26 @@ input {
 	padding: 4px;
 	background: darken(@body-bg, 3%);
 }
+
+// styles for mobile user nav
+
+@media screen and (max-width: 790px){
+	.collapse.navbar-collapse > span {
+		float: right !important;
+	}
+	.collapse.navbar-collapse {
+		display: block !important;
+		visibility: visible;
+		float: none;
+		width: 100%;
+	}
+}
+@media screen and (max-width: 600px){
+	.collapse.navbar-collapse > span {
+   	padding-top: 0;
+		float: left !important;
+	}
+	.collapse.navbar-collapse span {
+		text-align: left;
+	}
+}
