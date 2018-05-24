@@ -31,16 +31,16 @@
 	<!-- Mobile Specific Metas -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <title>{% block title %}{{ functionality.title.content }} · {{ selectedTopLevel.title.content }}{% endblock %}</title>
+	<title>{% block title %}{{ functionality.title.content }} · {{ selectedTopLevel.title.content }}{% endblock %}</title>
 
-    <link href="{{asset('/themes/dot/css/style.css')}}" rel="stylesheet">
+	<link href="{{asset('/themes/dot/css/style.css')}}" rel="stylesheet">
 	{% block headerStyles %}{% endblock %}
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
 
 	<script src="{{asset('/bennu-portal/js/jquery.min.js')}}"></script>
 	<script src="{{asset('/themes/dot/js/bootstrap.min.js')}}"></script>
@@ -52,7 +52,7 @@
   <body>
 	  {% block body %}
 	  <div class="container">
-	  	{% block topbar %}
+		{% block topbar %}
 		<header class="row" role="banner">
 			<div class="top-navbar">
 				<img class="app-logo" width="58px" heigth="49px" src="{{contextPath}}/api/bennu-portal/configuration/logo" alt="{{config.applicationTitle.content}}">
@@ -60,10 +60,10 @@
 					<h4 class="media-heading">{{config.applicationTitle.content}} <span class="small" id="subtitle">{{config.applicationSubTitle.content}}</span></h4>
 				</div>
 				  <div class="collapse navbar-collapse">
-				 	<span class="pull-right text-right navbar-brand">
-					  	{% if loggedUser is null %}
+					<span class="pull-right text-right navbar-brand">
+						{% if loggedUser is null %}
 							<a href="{{contextPath}}/login">{{ i18n('resources.DotThemeResources', 'label.login') }}</a>
-					 	{% else %}
+						{% else %}
 							{{ i18n('resources.DotThemeResources', 'label.username') }}: {{loggedUser.displayName}} ({{loggedUser.username}})
 							<a href="{{contextPath}}/logout">{{ i18n('resources.DotThemeResources', 'label.logout') }}</a>
 							<br />
@@ -116,10 +116,136 @@
 		{% block footer %}
 		<footer class="col-lg-12 footer">
 			{{config.applicationCopyright.content}}
+			|
+			<a href="" onclick="openSupport(); return false;">
+				{{i18n('resources.DotThemeResources', 'label.support.form')}}
+			</a>
 		</footer>
 		{% endblock %}
 		</div>
 
 		{% endblock %}
 	</body>
+
+	<div class="modal fade" tabindex="-1" role="dialog" id="supportModal">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<form id="supportForm" class="form-horizontal">
+				<input type="hidden" name="userAgent" value="{{pageContext.request.getHeader('User-Agent')}}" />
+				<input type="hidden" name="referer" value="{{pageContext.request.getHeader('Referer')}}" />
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="myModalLabel">{{i18n('resources.DotThemeResources', 'label.support.form')}}</h4>
+				</div>
+				<div class="modal-body form-body">
+					{{i18n('resources.DotThemeResources', 'label.support.form.welcome')}}
+					<hr />
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{i18n('resources.DotThemeResources', 'label.error.page.support')}}:</label>
+							<div class="col-sm-10">
+								<select name="support" id="support" class="form-control">
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="subject" class="col-sm-2 control-label">{{i18n('resources.DotThemeResources', 'label.error.page.subject')}}:</label>
+							<div class="col-sm-10">
+								<input type="text" name="subject" id="subject" class="form-control" required />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="description" class="col-sm-2 control-label">{{i18n('resources.DotThemeResources', 'label.error.page.description')}}:</label>
+							<div class="col-sm-10">
+								<textarea id="description" name="description" rows="5" style="width: 100%" required></textarea>
+								<small>{{i18n('resources.DotThemeResources', 'label.error.page.help')}}</small>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="type" class="col-sm-2 control-label">{{i18n('resources.DotThemeResources', 'label.support.form.type')}}:</label>
+							<div class="col-sm-10">
+								<label class="radio-inline">
+									<input type="radio" name="type" id="type-error" value="error" checked>
+									{{i18n('resources.DotThemeResources', 'label.support.form.type.error')}}
+								</label>
+								<label class="radio-inline">
+									<input type="radio" name="type" id="type-request" value="request" required>
+									{{i18n('resources.DotThemeResources', 'label.support.form.type.request')}}
+								</label>
+								<label class="radio-inline">
+									<input type="radio" name="type" id="type-question" value="question">
+									{{i18n('resources.DotThemeResources', 'label.support.form.type.question')}}
+								</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="attachment" class="col-sm-2 control-label">{{i18n('resources.DotThemeResources', 'label.support.form.attachment')}}:</label>
+							<div class="col-sm-10">
+								<div class="alert alert-danger" id="largeFile" style="display: none">
+									{{i18n('resources.DotThemeResources', 'label.support.form.attachment.file.too.large')}}
+								</div>
+								<input type="file" name="attachment" id="attachment" />
+								<small>{{i18n('resources.DotThemeResources', 'label.support.form.attachment.help')}}</small>
+							</div>
+						</div>
+				</div>
+				<div class="modal-body success text-center hide">
+					<h3>{{i18n('resources.DotThemeResources', 'message.error.page.submitted')}}</h3>
+					{{i18n('resources.DotThemeResources', 'message.error.page.submitted.body')}} <a href="mailto:dsi@tecnico.ulisboa.pt">dsi@tecnico.ulisboa.pt</a>.
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">{{i18n('resources.DotThemeResources', 'label.error.page.submit')}}</button>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		openSupport = function() {
+			//$('#supportModal').load('{{contextPath}}/themes/ashes-ist/supportModal.jsp');
+			$('#supportModal').modal('show');
+		};
+
+		var data = { 'functionality': '{{functionality.externalId}}' };
+		$.get('{{contextPath}}/api/support-form/{{functionality.externalId}}', function(data){
+		  $('#support').append($('<option>', {
+					value: data.default.id,
+					text : data.default.title
+		  }));
+		  $.each(data.options, function (i, item) {
+			  $('#support').append($('<option>', {
+				  value: item.id,
+				  text : item.title
+			  }));
+		  });
+		});
+
+
+		$.ajaxSetup({ headers: {'Content-Type':'application/json; charset=UTF-8'} });
+		$('#supportForm input[type=file]').on('change', function (event) {
+			var file = event.target.files[0]; $('#largeFile').hide();
+			if(file.size > 5 * 1024 * 1024) { 
+				$('#largeFile').show(); 
+				return; 
+			}
+			var reader = new FileReader();
+			data['fileName'] = file.name; data['mimeType'] = file.type;
+			reader.onload = function (e) {
+				var content = e.target.result;
+				data['attachment'] = content.substr(content.indexOf(",") + 1, content.length);
+			};
+			reader.readAsDataURL(file);
+		});
+		$('#supportForm').on('submit', function(event) {
+			event.preventDefault(); 
+			var target = $(event.target); $.map(target.serializeArray(), function(n, i){ data[n['name']] = n['value']; });
+			target.find('button[type=submit]').html("{{i18n('resources.DotThemeResources', 'label.error.page.submitting')}}...");
+			target.find('button[type=submit]').attr('disabled', true);
+			$.post('{{contextPath}}/api/support-form', JSON.stringify(data), function () {
+				target.find('.success').removeClass('hide'); 
+				target.find('.modal-footer').hide(); 
+				target.find('.form-body').hide();
+			});
+		});
+	</script>
 </html>
