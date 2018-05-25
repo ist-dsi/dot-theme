@@ -107,6 +107,15 @@
 
 		<div class="row">
 			<main id="content" class="clearfix">
+				{% if functionality.faqUrl != null %}
+					<button type="button" class="visible-lg btn btn-sm btn-default"  onclick="openFaq(); return false;" style="float: right; font-size: 17px;" aria-label="FAQ">
+						<span class="glyphicon glyphicon-question-sign" style="vertical-align: middle;" aria-hidden="true"></span>
+					</button>
+
+					<a class="hidden-lg btn btn-sm btn-default"  href="{{ functionality.faqUrl }}" style="float: right; font-size: 17px;" aria-label="FAQ">
+						<span class="glyphicon glyphicon-question-sign" style="vertical-align: middle;" aria-hidden="true"></span>
+					</a>
+				{% endif %}
 				<div>
 					{{body | raw}}
 				</div>
@@ -132,7 +141,7 @@
 			<div class="modal-content">
 				<form id="supportForm" class="form-horizontal">
 				<input type="hidden" name="userAgent" id="userAgent" value="" />
-				<input type="hidden" name="referer" id="referer" value="" />
+				<input type="hidden" name="referrer" id="referrer" value="" />
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 					<h4 class="modal-title" id="myModalLabel">{{i18n('resources.SupportFormResources', 'label.support.form')}}</h4>
@@ -200,29 +209,70 @@
 		</div>
 	</div>
 
+	<div class="modal fade" tabindex="-1" role="dialog" id="faqModal">
+		<div class="modal-dialog" style="width: 80%">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">FAQ</h4>
+				</div>
+				<div class="modal-body">
+					{% if functionality.faqUrl != null %}
+						<div class="embed-responsive embed-responsive-16by9">
+						</div>
+					{% else %}
+						<div class="alert alert-danger" role="alert">
+							{{i18n('resources.DotThemeResources', 'message.faq.none')}}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 	<script>
 		var data = { 'functionality': '{{functionality.externalId}}' };
+		var fetchedSupport = false;
+		var fetchedFaq = false;
 
 		openSupport = function() {
 			//$('#supportModal').load('{{contextPath}}/themes/ashes-ist/supportModal.jsp');
 
-			$.get('{{contextPath}}/api/support-form/{{functionality.externalId}}', function(data){
-				$('#support').append($('<option>', {
-					value: data.default.id,
-					text : data.default.title
-				}));
-				$.each(data.options, function (i, item) {
+			if(!fetchedSupport) {
+				$.get('{{contextPath}}/api/support-form/{{functionality.externalId}}', function(data){
 					$('#support').append($('<option>', {
-						value: item.id,
-						text : item.title
+						value: data.default.id,
+						text : data.default.title
 					}));
+					$.each(data.options, function (i, item) {
+						$('#support').append($('<option>', {
+							value: item.id,
+							text : item.title
+						}));
+					});
 				});
-			});
+
+				fetchedSupport = true;
+			}
 
 			$.ajaxSetup({ headers: {'Content-Type':'application/json; charset=UTF-8'} });
 
 			$('#supportModal').modal('show');
 		};
+
+		openFaq = function() {
+			var faqModal = $('#faqModal');
+
+
+			if(!fetchedFaq) {
+				{% if functionality.faqUrl != null %}
+					faqModal.find('.embed-responsive').append('<iframe class="embed-responsive-item" src="{{ functionality.faqUrl }}"></iframe>');
+				{% endif %}
+				fetchedFaq = true;
+			}
+			faqModal.modal('show');
+		}
 
 		$('#supportForm input[type=file]').on('change', function (event) {
 			var file = event.target.files[0]; $('#largeFile').hide();
@@ -242,7 +292,7 @@
 			event.preventDefault(); 
 
 			$("#userAgent").val(navigator.userAgent);
-			$("#referer").val(document.referrer);
+			$("#referrer").val(document.referrer);
 
 			var target = $(event.target); $.map(target.serializeArray(), function(n, i){ data[n['name']] = n['value']; });
 			target.find('button[type=submit]').html("{{i18n('resources.SupportFormResources', 'label.error.page.submitting')}}...");
