@@ -253,10 +253,8 @@
 		var fetchedSupport = false;
 
 		openSupport = function() {
-			//$('#supportModal').load('{{contextPath}}/themes/ashes-ist/supportModal.jsp');
-
 			if(!fetchedSupport) {
-				$.get('{{contextPath}}/api/support-form/{{functionality.externalId}}', function(data){
+				$.get('{{contextPath}}/api/dot/support-form/{{functionality.externalId}}', function(data){
 					$('#support').append($('<option>', {
 						value: data.default.id,
 						text : data.default.title
@@ -300,7 +298,7 @@
 			var target = $(event.target); $.map(target.serializeArray(), function(n, i){ data[n['name']] = n['value']; });
 			target.find('button[type=submit]').html("{{i18n('resources.SupportFormResources', 'label.error.page.submitting')}}...");
 			target.find('button[type=submit]').attr('disabled', true);
-			$.post('{{contextPath}}/api/support-form', JSON.stringify(data), function () {
+			$.post('{{contextPath}}/api/dot/support-form', JSON.stringify(data), function () {
 				target.find('.success').removeClass('hide'); 
 				target.find('.modal-footer').hide(); 
 				target.find('.form-body').hide();
