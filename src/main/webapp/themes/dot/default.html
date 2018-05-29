@@ -108,11 +108,11 @@
 		<div class="row">
 			<main id="content" class="clearfix">
 				{% if functionality.faqUrl != null %}
-					<button type="button" class="visible-lg btn btn-sm btn-default"  onclick="openFaq(); return false;" style="float: right; font-size: 17px;" aria-label="FAQ">
+					<button type="button" class="hidden-xs btn btn-sm btn-default"  onclick="openFaq(); return false;" style="float: right; font-size: 17px;" aria-label="FAQ">
 						<span class="glyphicon glyphicon-question-sign" style="vertical-align: middle;" aria-hidden="true"></span>
 					</button>
 
-					<a class="hidden-lg btn btn-sm btn-default"  href="{{ functionality.faqUrl }}" style="float: right; font-size: 17px;" aria-label="FAQ">
+					<a class="visible-xs btn btn-sm btn-default"  href="{{ functionality.faqUrl }}" style="float: right; font-size: 17px;" aria-label="FAQ">
 						<span class="glyphicon glyphicon-question-sign" style="vertical-align: middle;" aria-hidden="true"></span>
 					</a>
 				{% endif %}
@@ -209,32 +209,48 @@
 		</div>
 	</div>
 
-	<div class="modal fade" tabindex="-1" role="dialog" id="faqModal">
-		<div class="modal-dialog" style="width: 80%">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">FAQ</h4>
-				</div>
-				<div class="modal-body">
-					{% if functionality.faqUrl != null %}
-						<div class="embed-responsive embed-responsive-16by9">
+
+	{% if functionality.faqUrl != null %}
+		<div class="modal fade" tabindex="-1" role="dialog" id="faqModal">
+			<div class="modal-dialog" style="width: 80%">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">FAQ</h4>
+					</div>
+					<div class="modal-body">
+						<div class="embed-responsive">
 						</div>
-					{% else %}
-						<div class="alert alert-danger" role="alert">
-							{{i18n('resources.DotThemeResources', 'message.faq.none')}}
-						</div>
-					{% endif %}
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
+		<script type="text/javascript">
+			var fetchedFaq = false;
+			var faqModal = $('#faqModal');
+			var faqEmbed = faqModal.find('.embed-responsive');
+
+			setFaqAspectRatio = function() {
+				faqEmbed.css("padding-bottom", (window.innerHeight / window.innerWidth * 100) + "%");
+			}
+
+			openFaq = function() {
+				setFaqAspectRatio();
+				if(!fetchedFaq) {
+					faqEmbed.append('<iframe class="embed-responsive-item" src="{{ functionality.faqUrl }}"></iframe>');
+					fetchedFaq = true;
+				}
+				faqModal.modal('show');
+			}
+
+			$( window ).resize(setFaqAspectRatio);
+		</script>
+	{% endif %}
 
 	<script>
 		var data = { 'functionality': '{{functionality.externalId}}' };
 		var fetchedSupport = false;
-		var fetchedFaq = false;
 
 		openSupport = function() {
 			//$('#supportModal').load('{{contextPath}}/themes/ashes-ist/supportModal.jsp');
@@ -260,19 +276,6 @@
 
 			$('#supportModal').modal('show');
 		};
-
-		openFaq = function() {
-			var faqModal = $('#faqModal');
-
-
-			if(!fetchedFaq) {
-				{% if functionality.faqUrl != null %}
-					faqModal.find('.embed-responsive').append('<iframe class="embed-responsive-item" src="{{ functionality.faqUrl }}"></iframe>');
-				{% endif %}
-				fetchedFaq = true;
-			}
-			faqModal.modal('show');
-		}
 
 		$('#supportForm input[type=file]').on('change', function (event) {
 			var file = event.target.files[0]; $('#largeFile').hide();
