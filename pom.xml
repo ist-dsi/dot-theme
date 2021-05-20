@@ -15,11 +15,6 @@
     <name>Dot Theme</name>
     <inceptionYear>2015</inceptionYear>
 
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/ist-dsi/dot-theme/issues/</url>
-    </issueManagement>
-
     <licenses>
         <license>
             <name>GNU Lesser General Public License v3.0</name>
@@ -29,9 +24,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:ist-dsi/dot-theme.git</connection>
-        <developerConnection>scm:git:git@github.com:ist-dsi/dot-theme.git</developerConnection>
-        <url>http://fenixedu.org</url>
+        <connection>scm:git:git@repo.dsi.tecnico.ulisboa.pt:software/tecnicolisboa/dot-theme.git</connection>
+        <developerConnection>scm:git:git@repo.dsi.tecnico.ulisboa.pt:software/tecnicolisboa/dot-theme</developerConnection>
+        <url>https://repo.dsi.tecnico.ulisboa.pt/software/tecnicolisboa/dot-theme</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -60,18 +55,27 @@
         </plugins>
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>fenixedu-contrib-releases</id>
-            <url>https://repo.fenixedu.org/fenixedu-contrib-releases</url>
-        </repository>
-    </distributionManagement>
 
     <repositories>
         <repository>
             <id>fenixedu-maven-repository</id>
             <url>https://repo.fenixedu.org/fenixedu-maven-repository</url>
         </repository>
+        <repository>
+            <id>dsi-maven-artifacts</id>
+            <url>https://fenix-ashes.ist.utl.pt/nexus/repository/dsi-private-repo</url>
+        </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>dsi-maven-artifacts</id>
+            <url>https://fenix-ashes.tecnico.ulisboa.pt/nexus/repository/dsi-private-repo</url>
+        </repository>
+<!--        <repository>
+            <id>fenixedu-contrib-releases</id>
+            <url>https://repo.fenixedu.org/fenixedu-contrib-releases</url>
+        </repository>-->
+    </distributionManagement>
 
 </project>
